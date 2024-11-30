@@ -1,0 +1,43 @@
+.dashboard-card {
+  background-color: #14212b;
+  color: #c9d1d9;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.react-data-table {
+  margin-top: 20px;
+}
+
+.react-data-table .rdt_Table {
+  border-collapse: collapse;
+}
+
+.react-data-table .rdt_TableHead {
+  background-color: #1e2a38;
+}
+
+.react-data-table .rdt_TableHead th {
+  color: #c9d1d9;
+  font-weight: bold;
+  text-align: left;
+  padding: 10px;
+}
+
+.react-data-table .rdt_TableBody td {
+  color: #c9d1d9;
+  background-color: #1e2a38;
+  padding: 10px;
+  border-bottom: 1px solid #30363d;
+}
+
+.react-data-table .rdt_TableBody tr:nth-child(even) {
+  background-color: #1e2a38;
+}
+
+.react-data-table .rdt_TableBody tr:hover {
+  background-color: #14212b;
+}
