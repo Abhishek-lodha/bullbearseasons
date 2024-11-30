@@ -7,13 +7,16 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "date-fns": "^3.6.0",
+    "dayjs": "^1.11.13",
     "highcharts": "^9.3.3",
     "highcharts-react-official": "^3.2.1",
     "prettier": "^3.3.3",
     "react": "^18.3.1",
     "react-data-table-component": "^7.6.2",
+    "react-datepicker": "^7.5.0",
     "react-dom": "^18.3.1",
-    "react-scripts": "^3.0.1",
+    "react-scripts": "^5.0.1",
     "styled-components": "^6.1.13",
     "web-vitals": "^2.1.4"
   },
@@ -42,6 +45,8 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.26.0"
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.25.9"
   }
 }

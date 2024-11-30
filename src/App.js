@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import Header from "./components/Header";
-import MainChart from "./components/MainChart";
-import SidePanel from "./components/sidePanel/SidePanel";
-import FooterCharts from "./components/FooterCharts";
-import HistoricalReturnsTable from "./components/historicalReturns/historicalReturns";
+import Header from "./components/Header.js";
+import MainChart from "./components/MainChart.js";
+import SidePanel from "./components/sidePanel/SidePanel.js";
+import FooterCharts from "./components/FooterCharts.js";
+import HistoricalReturnsTable from "./components/historicalReturns/historicalReturns.js";
 // import DatePanel from './components/DatePanel';
+import ReactDatePicker from 'react-datepicker';
+import dayjs from 'dayjs'; // Import Day.js
+import "react-datepicker/dist/react-datepicker.css";
 
 
 const App = () => {
@@ -16,6 +19,9 @@ const App = () => {
 
   const [stockData, setStockData] = useState(null);
   const [metricsData, setMetricsData] = useState({});
+  // State for selected start and end date
+  const [startDate, setStartDate] = useState(dayjs());
+  const [endDate, setEndDate] = useState(dayjs());
 
   const handleSearch = (symbol) => {
     fetchStockData(symbol);
@@ -99,21 +105,81 @@ const App = () => {
   //   setEndDate(newEndDate);
   //   fetchStockData(selectedStock.symbol, newStartDate, newEndDate);
   // };
+  // Function to handle relative date selection
+  const handleRelativeDateSelection = (range) => {
+    let newStartDate = startDate;
+    let newEndDate = endDate;
+
+    switch (range) {
+      case '1-month':
+        newStartDate = dayjs().subtract(1, 'month'); // Subtract 1 month
+        break;
+      case '3-month':
+        newStartDate = dayjs().subtract(3, 'month'); // Subtract 3 months
+        break;
+      case '1-year':
+        newStartDate = dayjs().subtract(1, 'year'); // Subtract 1 year
+        break;
+      case '5-years':
+        newStartDate = dayjs().subtract(5, 'year'); // Subtract 5 years
+        break;
+      default:
+        break;
+    }
+
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
+  };
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#1e2a38", color: "#fff" }}>
+    <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: '#1e2a38', color: '#fff' }}>
       {/* Header */}
       <Header onSearch={handleSearch} />
 
-
       {/* Main Content */}
-      <div style={{ display: "flex", padding: "20px", justifyContent: "space-between" }}>
-        <div style={{ flex: 3, marginRight: "20px", display: "flex", flexDirection: "column" }}>
-          <div style={{ flex: 1, width: "100%" }}>
-            <MainChart stockData={stockData} />
-          </div>
-          <div style={{ flex: 2 }}>
-            <HistoricalReturnsTable stockData={metricsData?.historical || []} />
+      <div style={{ display: 'flex', padding: '20px', justifyContent: 'space-between' }}>
+        <div style={{ flex: 3, marginRight: '20px', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ flex: 1, width: '100%' }}>
+            {/* Date Picker and Relative Date Picker */}
+            <div style={{ marginBottom: '20px'}}>
+              <ReactDatePicker
+                selected={startDate.toDate()}
+                onChange={(date) => setStartDate(dayjs(date))}
+                selectsStart
+                startDate={startDate.toDate()}
+                endDate={endDate.toDate()}
+                dateFormat="yyyy-MM-dd"
+                placeholderText="Start Date"
+              />
+              <span style={{ margin: '0 10px' }}>to</span>
+              <ReactDatePicker
+                selected={endDate.toDate()}
+                onChange={(date) => setEndDate(dayjs(date))}
+                selectsEnd
+                startDate={startDate.toDate()}
+                endDate={endDate.toDate()}
+                dateFormat="yyyy-MM-dd"
+                placeholderText="End Date"
+              />
+                <select onChange={(e) => handleRelativeDateSelection(e.target.value)} style={{ marginLeft:'40px', padding: '8px', fontSize: '14px', cursor: 'pointer' }}>
+                  <option value="">Select Relative Date Range</option>
+                  <option value="1-month">Last 1 Month</option>
+                  <option value="3-month">Last 3 Months</option>
+                  <option value="1-year">Last 1 Year</option>
+                  <option value="5-years">Last 5 Years</option>
+                </select>
+            </div>
+
+            {/* Relative Date Range Selector */}
+            
+
+            <div style={{ flex: 1 }}>
+              <MainChart stockData={stockData} />
+            </div>
+
+            <div style={{ flex: 2 }}>
+              <HistoricalReturnsTable stockData={metricsData?.historical || []} />
+            </div>
           </div>
         </div>
 
@@ -121,8 +187,6 @@ const App = () => {
           <SidePanel stockData={metricsData?.data || {}} />
         </div>
       </div>
-
-      {/* <FooterCharts /> */}
     </div>
   );
 };
